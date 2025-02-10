@@ -12,6 +12,7 @@
         padding: 0;
         background-color: #f4f4f4;
         color: #333;
+        text-align: center;
       }
       header {
         padding: 20px;
@@ -32,12 +33,15 @@
         padding: 40px;
         max-width: 1200px;
         margin: auto;
+        justify-content: center;
       }
       .image-container {
         position: relative;
         overflow: hidden;
         border-radius: 12px;
         transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        display: flex;
+        justify-content: center;
       }
       .image-container img {
         width: 100%;
@@ -93,11 +97,12 @@
         background-color: #fff;
         box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
         margin-top: 20px;
+        width: 100%;
       }
     </style>
   </head>
   <body>
-    <header>Casey's Photography</header>
+    <header>Pictures by Casey</header>
 
     <main class="gallery">
       <div class="image-container" onclick="openLightbox(event)">
@@ -119,9 +124,11 @@
 
     <footer>
       <p>
-        &copy; 2025 Photography by Casey |
-        <a href="mailto:callmecasey98@gmail.com.com">Contact</a> |
-        <a href="https://instagram.com/callmecaseyy_">Instagram</a>
+        &copy; 2025 Casey's Photography |
+        <a href="mailto:callmecasey98@gmail.com">Contact</a> |
+        <a href="https://instagram.com/callmecaseyy_" target="_blank"
+          >Instagram</a
+        >
       </p>
     </footer>
 
