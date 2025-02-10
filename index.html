@@ -4,26 +4,43 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pictures by Casey</title>
-    <link rel="stylesheet" href="styles.css" />
+
     <style>
+      /* GLOBAL RESETS & BOX-SIZING */
+      html,
       body {
-        overflow-x: hidden;
-        width: 100vw;
-        max-width: 100%;
-        font-family: "Bebas Neue", sans-serif;
         margin: 0;
         padding: 0;
-        background-color: #d10a0a;
+        /* No horizontal scrolling */
+        overflow-x: hidden;
+        width: 100%; /* Use 100%, not 100vw */
+        max-width: 100%;
+        box-sizing: border-box;
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: inherit;
+      }
+
+      /* BODY */
+      body {
+        font-family: "Bebas Neue", sans-serif;
+        background-color: #d10a0a; /* Tarantino vibe */
         color: #ffcc00;
         text-align: center;
         text-transform: uppercase;
+        /* Padding at bottom so footer doesn't cover last image on mobile */
+        padding-bottom: 80px;
+        min-height: 100vh;
       }
+
+      /* HEADER */
       header {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        padding: 20px;
         background-color: #000;
         box-shadow: 0 4px 10px rgba(255, 204, 0, 0.8);
         text-align: center;
@@ -34,14 +51,27 @@
         top: 0;
         width: 100%;
         z-index: 1000;
+        padding: 20px;
       }
+      header h1 {
+        margin: 0 auto;
+        text-align: center;
+        /* Removed letter-spacing for safer mobile fit */
+        font-size: clamp(2rem, 6vw, 3.5rem);
+        max-width: 100%;
+        padding: 0 10px;
+        overflow-wrap: break-word;
+        white-space: normal;
+      }
+
+      /* GALLERY */
       .gallery {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
         gap: 15px;
         padding: 40px;
         max-width: 1000px;
-        margin: auto;
+        margin: 0 auto;
         justify-content: center;
       }
       @media (max-width: 600px) {
@@ -50,37 +80,37 @@
           padding: 20px;
         }
       }
+
+      /* IMAGE CONTAINERS */
       .image-container {
         position: relative;
         overflow: hidden;
         border-radius: 12px;
         transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        display: block;
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
         cursor: pointer;
       }
       .image-container img {
         width: 100%;
-        max-width: 600px; /* Increase the preview image size */
         height: auto;
         border-radius: 12px;
         transition: opacity 0.3s ease-in-out;
-        loading: lazy;
         display: block;
-        margin: auto;
+        /* Force safe size on mobile */
+        max-width: 100%;
       }
       .image-container:hover {
         transform: scale(1.05);
         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
       }
+
+      /* DESCRIPTION OVERLAY ON HOVER */
       .description {
         position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 100%;
-        height: 100%;
+        inset: 0; /* top: 0; left: 0; right: 0; bottom: 0; */
         background: rgba(0, 0, 0, 0.7);
         color: white;
         font-size: 14px;
@@ -88,7 +118,6 @@
         justify-content: center;
         align-items: center;
         text-align: center;
-        padding: 10px;
         opacity: 0;
         transition: opacity 0.3s ease-in-out;
         word-wrap: break-word;
@@ -96,29 +125,36 @@
         white-space: normal;
         flex-direction: column;
         border-radius: 12px;
+        box-sizing: border-box;
+        padding: 10px;
       }
       .image-container:hover .description {
         opacity: 1;
       }
+
+      /* LIGHTBOX */
       .lightbox {
         display: none;
         position: fixed;
         top: 0;
         left: 0;
+        z-index: 9999;
         width: 100%;
         height: 100%;
         background: rgba(0, 0, 0, 0.9);
-        justify-content: center;
+        animation: fadeIn 0.3s ease-in-out;
+        justify-content: flex-start; /* from top */
         align-items: center;
         flex-direction: column;
-        animation: fadeIn 0.3s ease-in-out;
-        padding-bottom: 20px;
+        padding-bottom: 120px;
+        overflow-y: auto; /* In case content is tall */
       }
       .lightbox img {
         max-width: 90%;
         max-height: 80%;
         border-radius: 12px;
         display: block;
+        margin: 40px auto 20px auto;
       }
       .lightbox-description {
         width: 90%;
@@ -128,7 +164,6 @@
         font-size: 14px;
         text-align: center;
         padding: 10px;
-        margin-top: 10px;
         border-radius: 8px;
         word-wrap: break-word;
         overflow-wrap: break-word;
@@ -136,7 +171,10 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        margin: 0 auto 100px auto;
       }
+
+      /* CLOSE BUTTON */
       .close {
         position: absolute;
         top: 20px;
@@ -149,6 +187,8 @@
       .close:hover {
         opacity: 0.7;
       }
+
+      /* ANIMATIONS */
       @keyframes fadeIn {
         from {
           opacity: 0;
@@ -165,6 +205,8 @@
           opacity: 0;
         }
       }
+
+      /* FOOTER - FIXED BANNER */
       footer {
         position: fixed;
         bottom: 0;
@@ -175,25 +217,25 @@
         background-color: #000;
         color: #ffcc00;
         box-shadow: 0 -4px 10px rgba(255, 204, 0, 0.8);
-        margin-top: 20px;
-        width: 100%;
         font-weight: bold;
+        margin-top: 0;
+      }
+      footer p {
+        max-width: 95%;
+        margin: 0 auto;
+        white-space: normal;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
       }
     </style>
   </head>
   <body>
+    <!-- HEADER -->
     <header>
-      <h1
-        style="
-          margin: 0 auto;
-          text-align: center;
-          font-size: 60px;
-          letter-spacing: 2px;
-        "
-      >
-        Pictures by Casey
-      </h1>
+      <h1>Pictures by Casey</h1>
     </header>
+
+    <!-- GALLERY -->
     <main class="gallery">
       <div
         class="image-container"
@@ -224,28 +266,25 @@
       </div>
     </main>
 
+    <!-- LIGHTBOX -->
     <div id="lightbox" class="lightbox" onclick="closeLightbox()">
-      <span class="close">&times;</span>
-      <img id="lightbox-img" src="" alt="Expanded view" />
-      <div id="lightbox-description" class="lightbox-description"></div>
+      <span class="close" onclick="event.stopPropagation(); closeLightbox();"
+        >&times;</span
+      >
+      <img
+        id="lightbox-img"
+        src=""
+        alt="Expanded view"
+        onclick="event.stopPropagation();"
+      />
+      <div
+        id="lightbox-description"
+        class="lightbox-description"
+        onclick="event.stopPropagation();"
+      ></div>
     </div>
 
-    <script>
-      function openLightbox(event, description) {
-        const imgSrc = event.currentTarget.querySelector("img").src;
-        document.getElementById("lightbox-img").src = imgSrc;
-        document.getElementById("lightbox-description").innerText = description;
-        document.getElementById("lightbox").style.display = "flex";
-      }
-      function closeLightbox() {
-        const lightbox = document.getElementById("lightbox");
-        lightbox.style.animation = "fadeOut 0.3s ease-in-out";
-        setTimeout(() => {
-          lightbox.style.display = "none";
-          lightbox.style.animation = "";
-        }, 300);
-      }
-    </script>
+    <!-- FOOTER -->
     <footer>
       <p>
         &copy; 2025 Casey's Photography |
@@ -263,5 +302,26 @@
         >
       </p>
     </footer>
+
+    <script>
+      function openLightbox(event, description) {
+        const imgSrc = event.currentTarget.querySelector("img").src;
+        document.getElementById("lightbox-img").src = imgSrc;
+        document.getElementById("lightbox-description").innerText = description;
+
+        const lightbox = document.getElementById("lightbox");
+        lightbox.style.display = "flex";
+        lightbox.style.animation = "fadeIn 0.3s ease-in-out";
+      }
+
+      function closeLightbox() {
+        const lightbox = document.getElementById("lightbox");
+        lightbox.style.animation = "fadeOut 0.3s ease-in-out";
+        setTimeout(() => {
+          lightbox.style.display = "none";
+          lightbox.style.animation = "";
+        }, 300);
+      }
+    </script>
   </body>
 </html>
