@@ -36,6 +36,29 @@
         justify-content: center;
       }
       @media (max-width: 600px) {
+        body {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+        }
+        header {
+          text-align: center;
+        }
+        .gallery {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+        .image-container {
+          width: 90%;
+        }
+        .description {
+          width: 100%;
+        }
+        .lightbox-description {
+          max-width: 90%;
+        }
         .gallery {
           grid-template-columns: 1fr;
           padding: 20px;
@@ -49,6 +72,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        cursor: pointer;
       }
       .image-container img {
         width: 100%;
@@ -63,8 +87,9 @@
       }
       .description {
         position: absolute;
-        top: 0;
-        left: 0;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
         width: 100%;
         height: 100%;
         background: rgba(0, 0, 0, 0.7);
@@ -81,8 +106,7 @@
         overflow-wrap: break-word;
         white-space: normal;
         flex-direction: column;
-        left: 50%;
-        transform: translateX(-50%);
+        border-radius: 12px;
       }
       .image-container:hover .description {
         opacity: 1;
@@ -144,6 +168,14 @@
           opacity: 1;
         }
       }
+      @keyframes fadeOut {
+        from {
+          opacity: 1;
+        }
+        to {
+          opacity: 0;
+        }
+      }
       footer {
         text-align: center;
         padding: 20px;
@@ -166,7 +198,6 @@
         Pictures by Casey
       </h1>
     </header>
-
     <main class="gallery">
       <div
         class="image-container"
@@ -203,16 +234,6 @@
       <div id="lightbox-description" class="lightbox-description"></div>
     </div>
 
-    <footer>
-      <p>
-        &copy; 2025 Casey's Photography |
-        <a href="mailto:callmecasey98@gmail.com">Contact</a> |
-        <a href="https://instagram.com/callmecaseyy_" target="_blank"
-          >Instagram</a
-        >
-      </p>
-    </footer>
-
     <script>
       function openLightbox(event, description) {
         const imgSrc = event.currentTarget.querySelector("img").src;
@@ -221,7 +242,12 @@
         document.getElementById("lightbox").style.display = "flex";
       }
       function closeLightbox() {
-        document.getElementById("lightbox").style.display = "none";
+        const lightbox = document.getElementById("lightbox");
+        lightbox.style.animation = "fadeOut 0.3s ease-in-out";
+        setTimeout(() => {
+          lightbox.style.display = "none";
+          lightbox.style.animation = "";
+        }, 300);
       }
     </script>
   </body>
