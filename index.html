@@ -35,6 +35,12 @@
         margin: auto;
         justify-content: center;
       }
+      @media (max-width: 600px) {
+        .gallery {
+          grid-template-columns: 1fr;
+          padding: 20px;
+        }
+      }
       .image-container {
         position: relative;
         overflow: hidden;
@@ -42,6 +48,7 @@
         transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
         display: flex;
         justify-content: center;
+        align-items: center;
       }
       .image-container img {
         width: 100%;
@@ -54,6 +61,32 @@
         transform: scale(1.05);
         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
       }
+      .description {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        color: white;
+        font-size: 16px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 20px;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        white-space: normal;
+        flex-direction: column;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      .image-container:hover .description {
+        opacity: 1;
+      }
       .lightbox {
         display: none;
         position: fixed;
@@ -64,12 +97,32 @@
         background: rgba(0, 0, 0, 0.9);
         justify-content: center;
         align-items: center;
+        flex-direction: column;
         animation: fadeIn 0.3s ease-in-out;
+        padding-bottom: 20px;
       }
       .lightbox img {
         max-width: 90%;
-        max-height: 90%;
+        max-height: 80%;
         border-radius: 12px;
+        display: block;
+      }
+      .lightbox-description {
+        width: 90%;
+        max-width: 500px;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        font-size: 14px;
+        text-align: center;
+        padding: 10px;
+        margin-top: 10px;
+        border-radius: 8px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        white-space: normal;
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
       .close {
         position: absolute;
@@ -115,21 +168,39 @@
     </header>
 
     <main class="gallery">
-      <div class="image-container" onclick="openLightbox(event)">
+      <div
+        class="image-container"
+        onclick="openLightbox(event, 'Cafe in West Seattle shot on Cinestill 800t.')"
+      >
         <img src="images/image1.jpg" alt="Photography 1" />
+        <div class="description">
+          Cafe in West Seattle shot on Cinestill 800t.
+        </div>
       </div>
-      <div class="image-container" onclick="openLightbox(event)">
+      <div
+        class="image-container"
+        onclick="openLightbox(event, 'The Seattle Great Wheel shot on Kodak Porta 400.')"
+      >
         <img src="images/image2.jpg" alt="Photography 2" />
+        <div class="description">
+          The Seattle Great Wheel shot on Kodak Porta 400.
+        </div>
       </div>
-      <div class="image-container" onclick="openLightbox(event)">
+      <div
+        class="image-container"
+        onclick="openLightbox(event, 'The New York Public Library shot on Kodak Portra 400.')"
+      >
         <img src="images/image3.jpg" alt="Photography 3" />
+        <div class="description">
+          The New York Public Library shot on Kodak Portra 400.
+        </div>
       </div>
-      <!-- Add more images as needed -->
     </main>
 
     <div id="lightbox" class="lightbox" onclick="closeLightbox()">
       <span class="close">&times;</span>
       <img id="lightbox-img" src="" alt="Expanded view" />
+      <div id="lightbox-description" class="lightbox-description"></div>
     </div>
 
     <footer>
@@ -143,9 +214,10 @@
     </footer>
 
     <script>
-      function openLightbox(event) {
-        const imgSrc = event.target.src;
+      function openLightbox(event, description) {
+        const imgSrc = event.currentTarget.querySelector("img").src;
         document.getElementById("lightbox-img").src = imgSrc;
+        document.getElementById("lightbox-description").innerText = description;
         document.getElementById("lightbox").style.display = "flex";
       }
       function closeLightbox() {
